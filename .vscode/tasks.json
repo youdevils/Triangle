@@ -11,7 +11,7 @@
                 "${workspaceFolder}/*.cpp",
                 "-I${workspaceFolder}/*.hpp",
                 "-o",
-                "${workspaceFolder}/math",
+                "${workspaceFolder}/Triangle",
                 "-Wall"
             ],
             "options": {

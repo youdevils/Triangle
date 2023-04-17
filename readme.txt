@@ -13,30 +13,30 @@ Once triangle object is instanciated, these functions create the triangle data f
     (Angle - Length - Length) Where the neither length is the opposite of the angle
 4. Set_ALA
     (Angle - Length - Angle) Where the length following the angle is the angles opposite length and the last angle is any other
-    Note that the 3rd angle can be found for any triangle by adding the other 2 and subtracting from 180.
 
-All Set calls will go through basic validation. Where this fails a console output will show. 
+Set functions must validate that inputs are a triangle. 
+Validation failure shown in console.
+
 The triangle can be set multiple times with the same or different data, even after a validation fail.
 
 The following functions are available for triangles that have been set and passed validation:
-
-Print_Summary
+[Print_Summary]
     Prints triangle information to the console
-Get_Length
+[Get_Length]
     Returns the length of a triangle side 'a', 'b' or 'c'
-Get_Radian_Angle
+[Get_Radian_Angle]
     Returns the angle of a triangle vertex 'A', 'B' or 'C' in radians
-Get_Degree_Angle
+[Get_Degree_Angle]
     Returns the angle of a triangle vertex 'A', 'B' or 'C' in degrees
-Get_Area
+[Get_Area]
     Returns the area value for the triangle
-Get_Perimeter
+[Get_Perimeter]
     Returns the perimeter value for the triangle
-Get_Height
+[Get_Height]
     Returns the height of a triangles vertex 'A', 'B' or 'C' to its opposite side
-Get_Base
+[Get_Base]
     Returns a side of triangle that can be used as the base
-Get_Inradius
+[Get_Inradius]
     Returns the radius value of the triangles inradius circle
-Get_Circumradius
+[Get_Circumradius]
     Returns the radius value of the triangles circumradius circle
