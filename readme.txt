@@ -2,7 +2,7 @@ General Purpose Triangle
 
 Can be instanciated in the following ways:
 1. Empty
-    Is a not set to any meaningful values. Will output error to terminal.
+    Is not set to any meaningful values. Will output error to terminal.
 2. Set_By_Length
     Take all three side lengths of a triangle
 3. Set_ALL
