@@ -4,7 +4,7 @@ Can be instanciated in the following ways:
 1. Empty
     Is not set to any meaningful values. Will be in this state if validation fails.
 
-Once triangle object is instanciated, these functions create the triangle data from various inputs
+Once triangle object is instanciated, these functions create a full triangle with supporting data from various inputs
 1. Set_By_Length
     Take all three side lengths of a triangle
 2. Set_ALL
