@@ -38,29 +38,30 @@ private:
     double height_c = 0;
 
 private:
-    double radian_to_degree(double radian) const;
-    double degree_to_radian(double degree) const;
-    bool is_right_triangle(double sidea, double sideb, double sidec);
-    bool is_obtuse_angle(double degree);
-    double get_angle(double sidea, double sideb, double sidec);
-    double get_length(double angle, double sideb, double sidec);
-    bool check_valid_triangle();
-    void set_type();
+    double Radian_To_Degree(double radian) const;
+    double Degree_To_Radian(double degree) const;
+    bool Is_Right_Triangle(double sidea, double sideb, double sidec);
+    bool Is_Obtuse_Angle(double degree);
+    double Angle_By_Cosine(double returnside, double sideb, double sidec, bool obtuse);
+    double Length_By_Cosine(double angle, double sideb, double sidec);
+    bool Check_Valid_Triangle();
+    void Set_Triangle_Classification();
 
 public:
     Triangle() = default;
     ~Triangle() = default;
-    bool Set_By_3(double sidea, double sideb, double sidec);
-    bool Set_ALL(double angle1, double length1, double length2, bool obtuse);
-    bool Set_ALA(double angle1, double length1, double angle2);
-    void print_summary() const;
-    double side_length(const char side_letter) const;
-    double angle_radian(const char angle_letter) const;
-    double angle_degree(const char angle_letter) const;
-    double area() const;
-    double perimeter() const;
-    double height(const char angle) const;
-    char base() const;
-    double inradius() const;
-    double circumradius() const;
+    bool Set_By_Length(double sidea, double sideb, double sidec, bool obtuse);
+    bool Set_ALL(double angleA, double lengtha, double lengthb, bool obtuse);
+    bool Set_LLA(double angleA, double lengthb, double lengthc, bool obtuse);
+    bool Set_ALA(double angleA, double lengtha, double angleb);
+    void Print_Summary() const;
+    double Get_Length(const char side_letter) const;
+    double Get_Radian_Angle(const char angle_letter) const;
+    double Get_Degree_Angle(const char angle_letter) const;
+    double Get_Area() const;
+    double Get_Perimeter() const;
+    double Get_Height(const char angle) const;
+    char Get_Base() const;
+    double Get_Inradius() const;
+    double Get_Circumradius() const;
 };
