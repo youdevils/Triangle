@@ -3,13 +3,15 @@ General Purpose Triangle
 Can be instanciated in the following ways:
 1. Empty
     Is not set to any meaningful values. Will be in this state if validation fails.
-2. Set_By_Length
+
+Once triangle object is instanciated, these functions create the triangle data from various inputs
+1. Set_By_Length
     Take all three side lengths of a triangle
-3. Set_ALL
+2. Set_ALL
     (Angle - Length - Length) Where the length following the angle is the angles opposite length and the last lenght is any other
-4. Set_LLA
+3. Set_LLA
     (Angle - Length - Length) Where the neither length is the opposite of the angle
-5. Set_ALA
+4. Set_ALA
     (Angle - Length - Angle) Where the length following the angle is the angles opposite length and the last angle is any other
     Note that the 3rd angle can be found for any triangle by adding the other 2 and subtracting from 180.
 
