@@ -51,7 +51,7 @@ public:
     ~Triangle() = default;
     bool Set_By_Length(double sidea, double sideb, double sidec);
     bool Set_ALL(double angleA, double lengtha, double lengthb, bool obtuse);
-    bool Set_LLA(double angleA, double lengthb, double lengthc, bool obtuse);
+    bool Set_LLA(double angleA, double lengthb, double lengthc);
     bool Set_ALA(double angleA, double lengtha, double angleb);
     void Print_Summary() const;
     double Get_Length(const char side_letter) const;

@@ -64,7 +64,7 @@ bool Triangle::Set_ALL(double angleA, double lengtha, double lengthb, bool obtus
 
     return Triangle::Set_By_Length(side_a, side_b, side_c);
 }
-bool Triangle::Set_LLA(double angleA, double lengthb, double lengthc, bool obtuse)
+bool Triangle::Set_LLA(double angleA, double lengthb, double lengthc)
 {
     angle_a = angleA;
     side_b = lengthb;
