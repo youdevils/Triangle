@@ -17,21 +17,6 @@ enum SIDE_TYPE
     EQUILATERAL,
 };
 
-struct Side
-{
-    double length = 0.0;
-    char name = 'f';
-    bool longest = false;
-};
-
-struct Vertex
-{
-    double angle = 0.0;
-    char name = 'F';
-    bool obtuse = false;
-    double height_to_opposite = 0.0;
-};
-
 class Triangle
 {
 private:
@@ -40,9 +25,6 @@ private:
 
     ANGLE_TYPE angle_type = ANGLE_TYPE::ACUTE;
     SIDE_TYPE side_type = SIDE_TYPE::EQUILATERAL;
-
-    Side a, b, c;
-    Vertex A, B, C;
 
     double side_a = 0;
     double side_b = 0;
