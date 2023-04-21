@@ -1,23 +1,52 @@
 #include "Triangle.hpp"
 
 /* Construct Area */
-bool Triangle::Set_By_Length(double sidea, double sideb, double sidec, bool obtuse)
+bool Triangle::Set_By_Length(double sidea, double sideb, double sidec)
 {
-    side_a = sidea;
-    side_b = sideb;
-    side_c = sidec;
-    angle_a = Angle_By_Cosine(sidea, sideb, sidec, obtuse);
-    angle_b = Angle_By_Cosine(sideb, sidea, sidec, obtuse);
-    angle_c = Angle_By_Cosine(sidec, sidea, sideb, obtuse);
+    double sides[] = {sidea,
+                      sideb,
+                      sidec};
+
+    if (sides[0] < sides[2])
+    {
+        double temp = sides[0];
+        sides[0] = sides[2];
+        sides[2] = temp;
+    }
+
+    if (sides[0] < sides[1])
+    {
+        double temp = sides[0];
+        sides[0] = sides[1];
+        sides[1] = temp;
+    }
+
+    side_a = sides[0];
+    side_b = sides[1];
+    side_c = sides[2];
+
+    Set_Triangle_Classification();
+
+    if (angle_type == ANGLE_TYPE::RIGHT)
+    {
+        angle_a = 180 - Angle_By_Cosine(side_a, side_b, side_c);
+    }
+    else
+    {
+        angle_a = Angle_By_Cosine(side_a, side_b, side_c);
+    }
+    angle_b = Angle_By_Cosine(side_b, side_a, side_c);
+    angle_c = Angle_By_Cosine(side_c, side_a, side_b);
+
     if (Check_Valid_Triangle())
     {
-        Set_Triangle_Classification();
         return true;
     }
     return false;
 }
 bool Triangle::Set_ALL(double angleA, double lengtha, double lengthb, bool obtuse)
 {
+
     angle_a = angleA;
     side_a = lengtha;
     side_b = lengthb;
@@ -32,13 +61,8 @@ bool Triangle::Set_ALL(double angleA, double lengtha, double lengthb, bool obtus
     }
     angle_c = 180 - angle_a - angle_b;
     side_c = Length_By_Cosine(angle_c, side_a, side_b);
-    if (Check_Valid_Triangle())
-    {
-        Set_Triangle_Classification();
-        return true;
-    }
 
-    return false;
+    return Triangle::Set_By_Length(side_a, side_b, side_c);
 }
 bool Triangle::Set_LLA(double angleA, double lengthb, double lengthc, bool obtuse)
 {
@@ -46,30 +70,19 @@ bool Triangle::Set_LLA(double angleA, double lengthb, double lengthc, bool obtus
     side_b = lengthb;
     side_c = lengthc;
     side_a = Length_By_Cosine(angle_a, side_b, side_c);
-    angle_b = Angle_By_Cosine(side_b, side_a, side_c, obtuse);
-    angle_c = Angle_By_Cosine(side_c, side_a, side_b, obtuse);
-    if (Check_Valid_Triangle())
-    {
-        Set_Triangle_Classification();
-        return true;
-    }
-
-    return false;
+    return Triangle::Set_By_Length(side_a, side_b, side_c);
 }
 bool Triangle::Set_ALA(double angleA, double lengtha, double angleB)
 {
     side_a = lengtha;
     angle_a = angleA;
     angle_b = angleB;
-    side_b = std::sin(Degree_To_Radian(angle_b)) * side_a / std::sin(Degree_To_Radian(angle_a));
     angle_c = 180 - angle_a - angle_b;
-    side_c = Length_By_Cosine(angle_c, side_a, side_b);
-    if (Check_Valid_Triangle())
-    {
-        Set_Triangle_Classification();
-        return true;
-    }
-    return false;
+
+    side_b = std::sin(Degree_To_Radian(angle_b)) * side_a / std::sin(Degree_To_Radian(angle_a));
+    side_c = std::sin(Degree_To_Radian(angle_c)) * side_a / std::sin(Degree_To_Radian(angle_a));
+
+    return Triangle::Set_By_Length(side_a, side_b, side_c);
 }
 /*Private Functions */
 bool Triangle::Check_Valid_Triangle()
@@ -86,7 +99,7 @@ bool Triangle::Check_Valid_Triangle()
     if (angle_a <= 0 || angle_b <= 0 || angle_c <= 0 || angle_a >= 180 || angle_b >= 180 || angle_c >= 180)
     {
         std::cout << "Failed Angle Test. Not a Valid Triangle." << std::endl;
-        is_set = false;
+        // is_set = false;
         return false;
     }
 
@@ -94,34 +107,35 @@ bool Triangle::Check_Valid_Triangle()
 }
 void Triangle::Set_Triangle_Classification()
 {
-    if (side_a != side_b && side_a != side_c && side_b != side_c)
+    is_set = true;
+
+    if (std::fabs(side_a * side_a - (side_b * side_b + side_c * side_c)) < equivalence_tolerance)
     {
-        type_side = SIDE_TYPE::SCALENE;
+        angle_type = ANGLE_TYPE::RIGHT;
     }
-    else if (side_a == side_b && side_a == side_c && side_b == side_c)
+    else if (side_a * side_a < (side_b * side_b + side_c * side_c))
     {
-        type_side = SIDE_TYPE::EQUILATERAL;
+        angle_type = ANGLE_TYPE::ACUTE;
     }
-    else if (side_a == side_b || side_a == side_c || side_b == side_c)
+    else if (side_a * side_a > (side_b * side_b + side_c * side_c))
     {
-        type_side = SIDE_TYPE::ISOCELES;
+        angle_type = ANGLE_TYPE::OBTUSE;
     }
 
-    if (Is_Right_Triangle(side_a, side_b, side_c))
+    if (std::fabs(side_a - side_b) < equivalence_tolerance && std::fabs(side_b - side_c) < equivalence_tolerance)
     {
-        type_angle = ANGLE_TYPE::RIGHT;
+        side_type = SIDE_TYPE::EQUILATERAL;
     }
-    else if (Is_Obtuse_Angle(angle_a) || Is_Obtuse_Angle(angle_b) || Is_Obtuse_Angle(angle_c))
+    else if (std::fabs(side_a - side_b) > equivalence_tolerance && std::fabs(side_a - side_c) > equivalence_tolerance && std::fabs(side_b - side_c) > equivalence_tolerance)
     {
-        type_angle = ANGLE_TYPE::OBTUSE;
+        side_type = SIDE_TYPE::SCALENE;
     }
     else
     {
-        type_angle = ANGLE_TYPE::ACUTE;
+        side_type = SIDE_TYPE::ISOSCELES;
     }
-
-    is_set = true;
 }
+
 double Triangle::Radian_To_Degree(double radian) const
 {
     return (radian * 180) / M_PI;
@@ -130,32 +144,8 @@ double Triangle::Degree_To_Radian(double degree) const
 {
     return (degree * M_PI) / 180;
 }
-bool Triangle::Is_Right_Triangle(double sidea, double sideb, double sidec)
-{
-    double tolerance = 0.00001;
-    if (std::abs((sidea * sidea) + (sideb * sideb) - (sidec * sidec)) < tolerance)
-    {
-        return true;
-    }
-    else if (std::abs((sidea * sidea) + (sidec * sidec) - (sideb * sideb)) < tolerance)
-    {
-        return true;
-    }
-    else if (std::abs((sideb * sideb) + (sidec * sidec) - (sidea * sidea)) < tolerance)
-    {
-        return true;
-    }
-    return false;
-}
-bool Triangle::Is_Obtuse_Angle(double degree)
-{
-    if (degree > 90)
-    {
-        return true;
-    }
-    return false;
-}
-double Triangle::Angle_By_Cosine(double returnside, double sideb, double sidec, bool obtuse)
+
+double Triangle::Angle_By_Cosine(double returnside, double sideb, double sidec)
 {
     double cosine_rule = ((sideb * sideb) + (sidec * sidec) - (returnside * returnside)) / (2 * sideb * sidec);
     double radian_angle = std::acos(cosine_rule);
@@ -172,12 +162,8 @@ double Triangle::Angle_By_Cosine(double returnside, double sideb, double sidec, 
     }
     else
     {
-        // If cosine rule is between -1 and 1, there are two valid solutions
-        if (obtuse)
-        {
-            return 180 - Radian_To_Degree(radian_angle);
-        }
         return Radian_To_Degree(radian_angle);
+        // return Radian_To_Degree(radian_angle);
     }
 }
 double Triangle::Length_By_Cosine(double angle, double sideb, double sidec)
@@ -194,7 +180,7 @@ void Triangle::Print_Summary() const
         return;
     }
     std::cout << "Types       : ";
-    switch (type_angle)
+    switch (angle_type)
     {
     case 0:
         std::cout << "Right ";
@@ -209,7 +195,7 @@ void Triangle::Print_Summary() const
         break;
     }
 
-    switch (type_side)
+    switch (side_type)
     {
     case 0:
         std::cout << "| Scalene" << std::endl;
@@ -340,12 +326,12 @@ double Triangle::Get_Height(const char angle) const
 
 char Triangle::Get_Base() const
 {
-    switch (type_side)
+    switch (side_type)
     {
     case SIDE_TYPE::EQUILATERAL:
         return 'a';
         break;
-    case SIDE_TYPE::ISOCELES:
+    case SIDE_TYPE::ISOSCELES:
         if (side_a == side_b)
         {
             return 'c';

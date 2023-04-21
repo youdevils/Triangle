@@ -13,17 +13,36 @@ enum ANGLE_TYPE
 enum SIDE_TYPE
 {
     SCALENE,
-    ISOCELES,
+    ISOSCELES,
     EQUILATERAL,
+};
+
+struct Side
+{
+    double length = 0.0;
+    char name = 'f';
+    bool longest = false;
+};
+
+struct Vertex
+{
+    double angle = 0.0;
+    char name = 'F';
+    bool obtuse = false;
+    double height_to_opposite = 0.0;
 };
 
 class Triangle
 {
 private:
     bool is_set = false;
+    double equivalence_tolerance = 0.0001;
 
-    ANGLE_TYPE type_angle = ANGLE_TYPE::ACUTE;
-    SIDE_TYPE type_side = SIDE_TYPE::EQUILATERAL;
+    ANGLE_TYPE angle_type = ANGLE_TYPE::ACUTE;
+    SIDE_TYPE side_type = SIDE_TYPE::EQUILATERAL;
+
+    Side a, b, c;
+    Vertex A, B, C;
 
     double side_a = 0;
     double side_b = 0;
@@ -40,9 +59,7 @@ private:
 private:
     double Radian_To_Degree(double radian) const;
     double Degree_To_Radian(double degree) const;
-    bool Is_Right_Triangle(double sidea, double sideb, double sidec);
-    bool Is_Obtuse_Angle(double degree);
-    double Angle_By_Cosine(double returnside, double sideb, double sidec, bool obtuse);
+    double Angle_By_Cosine(double returnside, double sideb, double sidec);
     double Length_By_Cosine(double angle, double sideb, double sidec);
     bool Check_Valid_Triangle();
     void Set_Triangle_Classification();
@@ -50,7 +67,7 @@ private:
 public:
     Triangle() = default;
     ~Triangle() = default;
-    bool Set_By_Length(double sidea, double sideb, double sidec, bool obtuse);
+    bool Set_By_Length(double sidea, double sideb, double sidec);
     bool Set_ALL(double angleA, double lengtha, double lengthb, bool obtuse);
     bool Set_LLA(double angleA, double lengthb, double lengthc, bool obtuse);
     bool Set_ALA(double angleA, double lengtha, double angleb);
