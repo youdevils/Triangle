@@ -45,22 +45,24 @@ private:
     double Length_By_Cosine(double angle, double sideb, double sidec);
     bool Check_Valid_Triangle();
     void Set_Triangle_Classification();
+    void Sort_Lengths(double sidea, double sideb, double sidec);
+    bool Set_Vertex_Angles();
 
 public:
     Triangle() = default;
     ~Triangle() = default;
-    bool Set_By_Length(double sidea, double sideb, double sidec);
-    bool Set_ALL(double angleA, double lengtha, double lengthb, bool obtuse);
-    bool Set_LLA(double angleA, double lengthb, double lengthc);
-    bool Set_ALA(double angleA, double lengtha, double angleb);
-    void Print_Summary() const;
+    bool Set_Lengths(double sidea, double sideb, double sidec);
+    bool Set_AngleA_Lengtha_Lengthx(double angleA, double lengtha, double lengthb, bool obtuse);
+    bool Set_AngleA_Lengthb_Lengthc(double angleA, double lengthb, double lengthc);
+    bool Set_AngleA_Lengtha_Anglex(double angleA, double lengtha, double angleb);
+    void Get_Summary() const;
     double Get_Length(const char side_letter) const;
     double Get_Radian_Angle(const char angle_letter) const;
     double Get_Degree_Angle(const char angle_letter) const;
     double Get_Area() const;
     double Get_Perimeter() const;
     double Get_Height(const char angle) const;
-    char Get_Base() const;
+    char Get_Base_Side() const;
     double Get_Inradius() const;
     double Get_Circumradius() const;
 };

@@ -5,16 +5,16 @@ Can be instanciated in the following ways:
     Is not set to any meaningful values. Will be in this state if validation fails.
 
 Once triangle object is instanciated, these functions create a full triangle with supporting data from various inputs
-1. Set_By_Length
+1. Set_Lengths
     Take all three side lengths of a triangle
     True/False must be passed to confirm if the output should be acute or obtuse
-2. Set_ALL
+2. Set_AngleA_Lengtha_Lengthx
     (Angle - Length - Length) Where the length following the angle is the angles opposite length and the last lenght is any other
     True/False must be passed to confirm if the output should be acute or obtuse
-3. Set_LLA
+3. Set_AngleA_Lengthb_Lengthc
     (Angle - Length - Length) Where the neither length is the opposite of the angle
     True/False must be passed to confirm if the output should be acute or obtuse
-4. Set_ALA
+4. Set_AngleA_Lengtha_Anglex
     (Angle - Length - Angle) Where the length following the angle is the angles opposite length and the last angle is any other
 
 Set functions must validate that inputs are a triangle. 
@@ -23,7 +23,7 @@ Validation failure shown in console.
 The triangle can be set multiple times with the same or different data, even after a validation fail.
 
 The following functions are available for triangles that have been set and passed validation:
-[Print_Summary]
+[Get_Summary]
     Prints triangle information to the console
 [Get_Length]
     Returns the length of a triangle side 'a', 'b' or 'c'
@@ -37,7 +37,7 @@ The following functions are available for triangles that have been set and passe
     Returns the perimeter value for the triangle
 [Get_Height]
     Returns the height of a triangles vertex 'A', 'B' or 'C' to its opposite side
-[Get_Base]
+[Get_Base_Side]
     Returns a side of triangle that can be used as the base
 [Get_Inradius]
     Returns the radius value of the triangles inradius circle
@@ -51,15 +51,13 @@ Example Usage:
 int main()
 {
     Triangle t1;
-    t1.Set_ALL(40, 65.659, 90, true);
+    t1.Set_AngleA_Lengtha_Lengthx(40, 65.659, 90, false);
     t1.Print_Summary();
-    t1.Set_LLA(40, 100, 90, true);
-    t1.Print_Summary();
-    t1.Set_LLA(40, 100, 90, false);
+    t1.Set_AngleA_Lengthb_Lengthc(40, 100, 90);
     t1.Print_Summary();
 
     Triangle t2;
-    t2.Set_By_Length(3, 4, 5, false);
+    t2.Set_Lengths(3, 4, 5);
     t2.Print_Summary();
 }
 

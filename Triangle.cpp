@@ -1,42 +1,10 @@
 #include "Triangle.hpp"
 
 /* Construct Area */
-bool Triangle::Set_By_Length(double sidea, double sideb, double sidec)
+bool Triangle::Set_Lengths(double sidea, double sideb, double sidec)
 {
-    double sides[] = {sidea,
-                      sideb,
-                      sidec};
-
-    if (sides[0] < sides[2])
-    {
-        double temp = sides[0];
-        sides[0] = sides[2];
-        sides[2] = temp;
-    }
-
-    if (sides[0] < sides[1])
-    {
-        double temp = sides[0];
-        sides[0] = sides[1];
-        sides[1] = temp;
-    }
-
-    side_a = sides[0];
-    side_b = sides[1];
-    side_c = sides[2];
-
+    Sort_Lengths(sidea, sideb, sidec);
     Set_Triangle_Classification();
-
-    if (angle_type == ANGLE_TYPE::RIGHT)
-    {
-        angle_a = 180 - Angle_By_Cosine(side_a, side_b, side_c);
-    }
-    else
-    {
-        angle_a = Angle_By_Cosine(side_a, side_b, side_c);
-    }
-    angle_b = Angle_By_Cosine(side_b, side_a, side_c);
-    angle_c = Angle_By_Cosine(side_c, side_a, side_b);
 
     if (Check_Valid_Triangle())
     {
@@ -44,7 +12,7 @@ bool Triangle::Set_By_Length(double sidea, double sideb, double sidec)
     }
     return false;
 }
-bool Triangle::Set_ALL(double angleA, double lengtha, double lengthb, bool obtuse)
+bool Triangle::Set_AngleA_Lengtha_Lengthx(double angleA, double lengtha, double lengthb, bool obtuse)
 {
 
     angle_a = angleA;
@@ -62,27 +30,27 @@ bool Triangle::Set_ALL(double angleA, double lengtha, double lengthb, bool obtus
     angle_c = 180 - angle_a - angle_b;
     side_c = Length_By_Cosine(angle_c, side_a, side_b);
 
-    return Triangle::Set_By_Length(side_a, side_b, side_c);
+    return Triangle::Set_Lengths(side_a, side_b, side_c);
 }
-bool Triangle::Set_LLA(double angleA, double lengthb, double lengthc)
+bool Triangle::Set_AngleA_Lengthb_Lengthc(double angleA, double lengthb, double lengthc)
 {
     angle_a = angleA;
     side_b = lengthb;
     side_c = lengthc;
     side_a = Length_By_Cosine(angle_a, side_b, side_c);
-    return Triangle::Set_By_Length(side_a, side_b, side_c);
+    return Triangle::Set_Lengths(side_a, side_b, side_c);
 }
-bool Triangle::Set_ALA(double angleA, double lengtha, double angleB)
+bool Triangle::Set_AngleA_Lengtha_Anglex(double angleA, double lengtha, double angleB)
 {
-    side_a = lengtha;
     angle_a = angleA;
     angle_b = angleB;
     angle_c = 180 - angle_a - angle_b;
 
+    side_a = lengtha;
     side_b = std::sin(Degree_To_Radian(angle_b)) * side_a / std::sin(Degree_To_Radian(angle_a));
     side_c = std::sin(Degree_To_Radian(angle_c)) * side_a / std::sin(Degree_To_Radian(angle_a));
 
-    return Triangle::Set_By_Length(side_a, side_b, side_c);
+    return Triangle::Set_Lengths(side_a, side_b, side_c);
 }
 /*Private Functions */
 bool Triangle::Check_Valid_Triangle()
@@ -136,6 +104,48 @@ void Triangle::Set_Triangle_Classification()
     }
 }
 
+void Triangle::Sort_Lengths(double sidea, double sideb, double sidec)
+{
+    double sides[] = {sidea,
+                      sideb,
+                      sidec};
+
+    if (sides[0] < sides[2])
+    {
+        double temp = sides[0];
+        sides[0] = sides[2];
+        sides[2] = temp;
+    }
+
+    if (sides[0] < sides[1])
+    {
+        double temp = sides[0];
+        sides[0] = sides[1];
+        sides[1] = temp;
+    }
+
+    side_a = sides[0];
+    side_b = sides[1];
+    side_c = sides[2];
+
+    Set_Vertex_Angles();
+}
+
+bool Triangle::Set_Vertex_Angles()
+{
+    if (angle_type == ANGLE_TYPE::RIGHT)
+    {
+        angle_a = 180 - Angle_By_Cosine(side_a, side_b, side_c);
+    }
+    else
+    {
+        angle_a = Angle_By_Cosine(side_a, side_b, side_c);
+    }
+    angle_b = Angle_By_Cosine(side_b, side_a, side_c);
+    angle_c = Angle_By_Cosine(side_c, side_a, side_b);
+    return false;
+}
+
 double Triangle::Radian_To_Degree(double radian) const
 {
     return (radian * 180) / M_PI;
@@ -171,7 +181,7 @@ double Triangle::Length_By_Cosine(double angle, double sideb, double sidec)
     return std::sqrt(sideb * sideb + sidec * sidec - 2 * sideb * sidec * std::cos(Degree_To_Radian(angle)));
 }
 /* Public Functions */
-void Triangle::Print_Summary() const
+void Triangle::Get_Summary() const
 {
     if (is_set == false)
     {
@@ -236,7 +246,7 @@ void Triangle::Print_Summary() const
     std::cout << "Height a    : " << Get_Height('a') << std::endl;
     std::cout << "Height b    : " << Get_Height('b') << std::endl;
     std::cout << "Height c    : " << Get_Height('c') << std::endl;
-    std::cout << "Base Side   : " << Get_Base() << std::endl;
+    std::cout << "Base Side   : " << Get_Base_Side() << std::endl;
 
     std::cout << "Inradius    : " << Get_Inradius() << std::endl;
     std::cout << "Circumradius: " << Get_Circumradius() << std::endl;
@@ -324,7 +334,7 @@ double Triangle::Get_Height(const char angle) const
     return -1.0;
 }
 
-char Triangle::Get_Base() const
+char Triangle::Get_Base_Side() const
 {
     switch (side_type)
     {
